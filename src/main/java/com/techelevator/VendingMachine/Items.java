@@ -1,4 +1,4 @@
-package com.techelevator.inventoryItems;
+package com.techelevator.VendingMachine;
 
 import java.math.BigDecimal;
 
@@ -42,6 +42,13 @@ public class Items {
         return quantity;
     }
 
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPriceAsDecimal() {
+        return price;
+    }
 
 
 }

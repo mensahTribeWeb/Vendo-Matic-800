@@ -1,4 +1,4 @@
-package com.techelevator.inventoryItems;
+package com.techelevator.VendingMachine;
 //All chip items print "Crunch Crunch, Yum!"
 import java.math.BigDecimal;
 

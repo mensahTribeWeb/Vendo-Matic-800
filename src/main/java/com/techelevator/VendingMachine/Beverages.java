@@ -1,4 +1,4 @@
-package com.techelevator.inventoryItems;
+package com.techelevator.VendingMachine;
 
 import java.math.BigDecimal;
 //All drink items print "Glug Glug, Yum!"

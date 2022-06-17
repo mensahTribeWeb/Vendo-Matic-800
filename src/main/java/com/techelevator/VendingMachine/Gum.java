@@ -1,4 +1,4 @@
-package com.techelevator.inventoryItems;
+package com.techelevator.VendingMachine;
 //All gum items print "Chew Chew, Yum!"
 import java.math.BigDecimal;
 

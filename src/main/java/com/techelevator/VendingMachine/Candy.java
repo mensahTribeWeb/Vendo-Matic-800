@@ -1,4 +1,4 @@
-package com.techelevator.inventoryItems;
+package com.techelevator.VendingMachine;
 //All candy items print "Munch Munch, Yum!"
 import java.math.BigDecimal;
 
