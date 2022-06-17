@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 public class Beverages extends Items {
     //Methods/Constructors
     public Beverages(String slot, String name, BigDecimal price, String type, int quantity) {
-        super(slot, name, price, type, quantity, defaultQuantity);
+        super(slot, name, price, type, quantity);
     }
 
     @Override
