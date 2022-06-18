@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.FixMethodOrder;
 import org.junit.runners.MethodSorters;
 
-import com.techelevator.view.Menu;
+import com.techelevator.VendingMachine.Menu;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MenuTest {

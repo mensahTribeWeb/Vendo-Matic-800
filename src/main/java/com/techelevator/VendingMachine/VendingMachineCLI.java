@@ -1,8 +1,4 @@
-package com.techelevator;
-
-import com.techelevator.view.Menu;
-import com.techelevator.VendingMachine.VendingFunctions;
-import com.techelevator.VendingMachine.Inventory;
+package com.techelevator.VendingMachine;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -19,36 +15,41 @@ Scanner input =new Scanner(System.in);
 	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT , PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
 
-	private VendingFunctions vendingMachine = new VendingFunctions();
-
 	private Menu menu;
+	private VendingFunctions vm = new VendingFunctions();
+
+
 	BigDecimal accumulatedBalance =  new BigDecimal("0.00");
 
 	public VendingMachineCLI(Menu menu) {
-
 		this.menu = menu;
 	}
 
 	public void run() {
-		vendingMachine.getMyInventory().loadInventory();
+		SalesReport logger = new SalesReport();
+		vm.refill();
+		//vm.getMyInventory().loadInventory();
+		//Beginning Menu
 		while (true) {
+			System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
-				vendingMachine.getMyInventory().displayInventory();
+				System.out.println(vm.displayItems());
+				//vm.getMyInventory().loadInventory();
 			}
 			else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				// do purchase
 				System.out.println("purchasing section");
 				String purchaseSelection = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-
+					//feed money amount
 				if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
-					System.out.println("Feed Cash");
-					final String FEED_MONEY_1 = "Feed 1 dollars";
-					final String FEED_MONEY_2 = "Feed 2 dollars";
-					final String FEED_MONEY_5 = "Feed 5 dollars";
-					final String FEED_MONEY_10 = "Feed 10 dollars";
+					System.out.println("Insert Money.");
+					final String FEED_MONEY_1 = "Feed $1.00";
+					final String FEED_MONEY_2 = "Feed $2.00";
+					final String FEED_MONEY_5 = "Feed $5.00";
+					final String FEED_MONEY_10 = "Feed $10.00";
 					final String FEED_MONEY_DONE = "Done";
 					final String[] FEED_MONEY_MENU_OPTIONS = {FEED_MONEY_1, FEED_MONEY_2, FEED_MONEY_5, FEED_MONEY_10, FEED_MONEY_DONE};
 
@@ -58,26 +59,30 @@ Scanner input =new Scanner(System.in);
 					while (feedMoneyLoop) {
 						String feedSelection = (String) menu.getChoiceFromOptions(FEED_MONEY_MENU_OPTIONS);
 
-						if (purchaseSelection.equals("Done")){
+						if (purchaseSelection.equals(FEED_MONEY_DONE)){
 							feedMoneyLoop = false;
 						}
 						else {
-							BigDecimal amountAdd = vendingMachine.feedMoney(feedSelection, accumulatedBalance);
+							BigDecimal amountAdd = vm.feedMoney(feedSelection, accumulatedBalance);
 							accumulatedBalance = accumulatedBalance.add(amountAdd);
 						}
 					}
 					System.out.println("The accumulated balance: " + accumulatedBalance);
 					}
 				else if (purchaseSelection.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
-					vendingMachine.getMyInventory().displayInventory();
+					System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
+					System.out.println(vm.displayItems());
+					//vm.getMyInventory().loadInventory();
 					System.out.println("Enter Product: ");
-					String userInput = input.nextLine();
-					accumulatedBalance = vendingMachine.getMyInventory(userInput, accumulatedBalance);
+					menu.getChoiceForSpecificItem(vm);
 
 				}
 				else if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)){
-					vendingMachine.finishTransaction(accumulatedBalance);
-					accumulatedBalance = BigDecimal.ZERO;
+					Change change = new Change();
+					logger.logChange(vm.getAvailableFunds());
+					System.out.println(change.calculateChange(vm.getAvailableFunds()));
+					vm.resetAvailableFunds();
+					break;
 				}
 			}
 			else if (choice.equals(MAIN_MENU_OPTION_Exit)){

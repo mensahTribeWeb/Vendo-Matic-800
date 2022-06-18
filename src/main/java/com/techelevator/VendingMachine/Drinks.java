@@ -3,10 +3,10 @@ package com.techelevator.VendingMachine;
 import java.math.BigDecimal;
 //All drink items print "Glug Glug, Yum!"
 
-public class Beverages extends Items {
+public class Drinks extends Items {
     //Methods/Constructors
-    public Beverages(String slot, String name, BigDecimal price, String type, int quantity) {
-        super(slot, name, price, type, quantity);
+    public Drinks(String slot, BigDecimal price) {
+        super(slot, price);
     }
 
     @Override

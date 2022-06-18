@@ -1,4 +1,4 @@
-package com.techelevator.view;
+package com.techelevator.VendingMachine;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -49,5 +49,25 @@ public class Menu {
 		}
 		out.print(System.lineSeparator() + "Please choose an option >>> ");
 		out.flush();
+	}
+	public void getChoiceForSpecificItem(VendingFunctions vm) {
+		SalesReport logger = new SalesReport();
+		String userInput = in.nextLine();
+		String selectedOption = userInput.toUpperCase();
+		if(vm.getItemsInTheMachine().containsKey(selectedOption) || selectedOption == "0") {
+			if(selectedOption.equals("0")) {
+				return;
+			} else if(vm.isInStock(selectedOption) && vm.canPurchase(selectedOption)) {
+				System.out.println(vm.vend(selectedOption));
+			} else if (!vm.isInStock(selectedOption)) {
+				logger.logOutOfStock(vm.getAvailableFunds());
+				System.out.println("\nThe requested item is not in stock.\n");
+			} else if (!vm.canPurchase(selectedOption)) {
+				logger.notEnoughMoney(vm.getAvailableFunds());
+				System.out.println("\nYou do not have enough money.\n");
+			}
+		} else {
+			out.println("\n*** "+userInput+" is not a valid option ***\n");
+		}
 	}
 }

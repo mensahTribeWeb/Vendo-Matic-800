@@ -1,95 +1,129 @@
 package com.techelevator.VendingMachine;
 
-
 import java.io.File;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Inventory {
-    List<Items> vendingMachineArray = new ArrayList<>();
 
-    //inventory map: key is the item code, value is the item object
-    private Map<String, Items> inventory = new LinkedHashMap<>();
+    Map<String, List<Items>> vendingMap;
+    String[] documentArray;
 
-    //getters, setters, and helper methods
-    public BigDecimal getAPrice(String itemCode) {
-        Items itemToFind = inventory.get(itemCode);
-        return itemToFind.getPriceAsDecimal();
-    }
 
-    public void setQuantity(String itemCode) {
-        Items itemToUpdate = inventory.get(itemCode);
-        itemToUpdate.setQuantity(itemToUpdate.getQuantity() - 1);
-    }
-
-    public boolean checkForItemCode(String itemCode) {
-        return inventory.containsKey(itemCode);
-    }
-
-    public Items getItem(String itemCode) {
-        return inventory.get(itemCode);
-    }
 
     //create inventory map from a formatted txt file
     //load items
-//    /**idea for loading **/
-    public void loadInventory(){
+    public void loadInventory() {
+        String document = "";
+        String[] documentArray;
         File file = new File("vendingmachine.csv");
-        try (Scanner input = new Scanner(file.getAbsoluteFile())){
-            while(input.hasNextLine()){
+        //Reads the file located on the user's computer with the name "vendingmachine.csv".
+        //Stores the entire document as a single string.
+        try (Scanner input = new Scanner(file)) {
+            while (input.hasNextLine()) {
                 String line = input.nextLine();
-                String[] inventoryInfo = line.split("\\|");
-                String slot = inventoryInfo[0];
-                String name = inventoryInfo[1];
-                BigDecimal price = new BigDecimal(inventoryInfo[2]);
-                String type = inventoryInfo[3];
-                if (type.equals("Beverage")){
-                    vendingMachineArray.add(new Beverages(slot, name, price, type,5));
-                }
-                else if (type.equals("Candy")){
-                    vendingMachineArray.add(new Candy(slot, name, price, type,5));
-                }
-                else if (type.equals("Chips")){
-                    vendingMachineArray.add(new Chips(slot, name, price, type,5));
-                }
-                else if (type.equals("Gum")){
-                    vendingMachineArray.add(new Gum(slot, name, price, type,5));
+                while (input.hasNextLine()) {
+                    document += input.nextLine() + "\n";
+
                 }
             }
-        } catch (IOException e) {
-            System.out.println("File not found");
+        } catch (FileNotFoundException e) {
+            System.out.println("Was unable to locate file with name \"vendingmachine.csv\".");
+            e.printStackTrace();
+            System.exit(1);}
+
+            //Splits the entire document string into an array, separated by each new line.
+            //Each new line in the csv file should represent invidividual items and their data.
+            documentArray = document.split("\n");
+            this.documentArray = documentArray;
+
         }
-    }
+        public void createMap() {
+            Map<String, List<Items>> vendingMap = new LinkedHashMap<>();
 
-    //displays inventory at purchase menu
-    public String displayInventory() {
+            for(String element : documentArray) {
 
-        String inventoryUpdate = "";
-        for (Map.Entry<String, Items> map : inventory.entrySet()) {
-            if (map.getValue().getQuantity() == 0) {
-                inventoryUpdate += map.getKey() + " | " + "SOLD OUT" + "\n";
-            } else {
-                inventoryUpdate += map.getKey() + " | " + map.getValue().getName() + " | " + map.getValue().getPrice() + "\n";
+                //Splits each line into an array of length 3 with the first element representing the button (i.e. A1), second element (name of the product), and third element (the price of the item).
+                String[] elementArray = element.split("\\|");
+                String tempKey = elementArray[0];
+                List<Items> tempList = new ArrayList<>();
+                BigDecimal bd = new BigDecimal(elementArray[2]);
+
+                //If the item's button starts with A, create a chip object
+                if(elementArray[0].startsWith("A")) {
+
+                    Chips chip = new Chips(elementArray[1], bd);
+                    for(int i = 0; i < 5; i++) {
+                        tempList.add(chip);
+                    }
+                    vendingMap.put(tempKey, tempList);
+
+                    //If the item's button starts with B, create a candy object
+                } else if (elementArray[0].startsWith("B")) {
+
+                    Candy candy = new Candy(elementArray[1], bd);
+                    for(int i = 0; i < 5; i++) {
+                        tempList.add(candy);
+                    }
+                    vendingMap.put(tempKey, tempList);
+
+                    //If the item's button starts with C, create a drink object
+                } else if (elementArray[0].startsWith("C")) {
+
+                    Drinks drink = new Drinks(elementArray[1], bd);
+                    for(int i = 0; i < 5; i++) {
+                        tempList.add(drink);
+                    }
+                    vendingMap.put(tempKey, tempList);
+
+                    //If the item's button starts with D, create a gum object
+                } else if (elementArray[0].startsWith("D")) {
+
+                    Gum gum = new Gum(elementArray[1], bd);
+                    for(int i = 0; i < 5; i++) {
+                        tempList.add(gum);
+                    }
+                    vendingMap.put(tempKey, tempList);
+                }
             }
+            this.vendingMap = vendingMap;
         }
-        return inventoryUpdate;
-    }
 
-    //displays sales report at sales report main menu option
-    public String displayInventoryForSalesReport() {
-        String salesUpdates = "";
-        for (Map.Entry<String, Items> map : inventory.entrySet()) {
-            salesUpdates += map.getValue().getName() + " | " + (5 - (map.getValue().getQuantity())) + "\n";
+
+
+        //Retrieves the map generated after reading the csv file and the actual creation of the map.
+        public Map<String, List<Items>> stockMachine() {
+            loadInventory();
+            createMap();
+            return vendingMap;
         }
-        return salesUpdates;
     }
-
-    //item sold out - used in display inventory
-    public boolean itemSoldOut(String itemCode) {
-        Items itemToCheck = inventory.get(itemCode);
-        return itemToCheck.getQuantity() == 0;
-    }
-}
+    //Partial N.M. Code
+//                String[] inventoryInfo = line.split("\\|");
+//                String slot = inventoryInfo[0];
+//                String name = inventoryInfo[1];
+//                BigDecimal price = new BigDecimal(inventoryInfo[2]);
+//                String type = inventoryInfo[3];
+//                if (type.equals("Beverage")){
+//                    vendingMachineArray.add(new Beverages(slot, name, price, type,5));
+//                }
+//                else if (type.equals("Candy")){
+//                    vendingMachineArray.add(new Candy(slot, name, price, type,5));
+//                }
+//                else if (type.equals("Chips")){
+//                    vendingMachineArray.add(new Chips(slot, name, price, type,5));
+//                }
+//                else if (type.equals("Gum")){
+//                    vendingMachineArray.add(new Gum(slot, name, price, type,5));
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println("File not found");
+//        }
+//    }
+//

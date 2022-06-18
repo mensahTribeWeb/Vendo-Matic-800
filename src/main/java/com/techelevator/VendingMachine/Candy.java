@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 
 public class Candy extends Items {
     //Methods/Constructors
-    public Candy(String slot, String name, BigDecimal price, String type, int quantity) {
-        super(slot, name, price, type, quantity);
+    public Candy(String slot, BigDecimal price) {
+        super(slot, price);
     }
 
     @Override
