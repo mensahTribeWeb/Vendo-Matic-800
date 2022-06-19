@@ -1,4 +1,4 @@
-package com.techelevator.Inventory;
+package com.techelevator.VendingMachine;
 
 public class vendingMachineFunctionsTest {
 }

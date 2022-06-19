@@ -15,11 +15,16 @@ Scanner input =new Scanner(System.in);
 	private static final String PURCHASE_MENU_OPTION_FINISH_TRANSACTION = "Finish Transaction";
 	private static final String[] PURCHASE_MENU_OPTIONS = { PURCHASE_MENU_OPTION_FEED_MONEY, PURCHASE_MENU_OPTION_SELECT_PRODUCT , PURCHASE_MENU_OPTION_FINISH_TRANSACTION };
 
+	private static final String FEED_MENU_OPTION_ONE = "$1.00";
+	private static final String FEED_MENU_OPTION_TWO = "$2.00";
+	private static final String FEED_MENU_OPTION_FIVE = "$5.00";
+	private static final String FEED_MENU_OPTION_TEN = "$10.00";
+	private static final String FEED_MENU_OPTION_EXIT = "Go Back";
+	private static final String[] FEED_MENU_OPTIONS = { FEED_MENU_OPTION_ONE, FEED_MENU_OPTION_TWO, FEED_MENU_OPTION_FIVE, FEED_MENU_OPTION_TEN, FEED_MENU_OPTION_EXIT };
+
+
 	private Menu menu;
 	private VendingFunctions vm = new VendingFunctions();
-
-
-	BigDecimal accumulatedBalance =  new BigDecimal("0.00");
 
 	public VendingMachineCLI(Menu menu) {
 		this.menu = menu;
@@ -28,64 +33,44 @@ Scanner input =new Scanner(System.in);
 	public void run() {
 		SalesReport logger = new SalesReport();
 		vm.refill();
-		//vm.getMyInventory().loadInventory();
 		//Beginning Menu
-		while (true) {
-			System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
+		while(true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
 				// display vending machine items
 				System.out.println(vm.displayItems());
-				//vm.getMyInventory().loadInventory();
-			}
-			else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
-				// do purchase
-				System.out.println("purchasing section");
-				String purchaseSelection = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
-					//feed money amount
-				if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
-					System.out.println("Insert Money.");
-					final String FEED_MONEY_1 = "Feed $1.00";
-					final String FEED_MONEY_2 = "Feed $2.00";
-					final String FEED_MONEY_5 = "Feed $5.00";
-					final String FEED_MONEY_10 = "Feed $10.00";
-					final String FEED_MONEY_DONE = "Done";
-					final String[] FEED_MONEY_MENU_OPTIONS = {FEED_MONEY_1, FEED_MONEY_2, FEED_MONEY_5, FEED_MONEY_10, FEED_MONEY_DONE};
-
-
-					boolean feedMoneyLoop = true;
-
-					while (feedMoneyLoop) {
-						String feedSelection = (String) menu.getChoiceFromOptions(FEED_MONEY_MENU_OPTIONS);
-
-						if (purchaseSelection.equals(FEED_MONEY_DONE)){
-							feedMoneyLoop = false;
-						}
-						else {
-							BigDecimal amountAdd = vm.feedMoney(feedSelection, accumulatedBalance);
-							accumulatedBalance = accumulatedBalance.add(amountAdd);
-						}
-					}
-					System.out.println("The accumulated balance: " + accumulatedBalance);
-					}
-				else if (purchaseSelection.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)){
+			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
+				// Purchase Menu
+				while (true) {
 					System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
-					System.out.println(vm.displayItems());
-					//vm.getMyInventory().loadInventory();
-					System.out.println("Enter Product: ");
-					menu.getChoiceForSpecificItem(vm);
+					String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
+					if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+						//Feed Money Menu
+						while (true){
+							System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
+							String feedChoice = (String) menu.getChoiceFromOptions(FEED_MENU_OPTIONS);
+
+							if (feedChoice.equals(FEED_MENU_OPTION_EXIT)) {
+								break;
+							}
+							vm.feedMoney(new BigDecimal(feedChoice.replace("$", "")));
+						}
+					} else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
+						System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
+						System.out.println(vm.displayItems());
+						System.out.println("Enter Product: ");
+						menu.getChoiceForSpecificItem(vm);
+					} else if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+						Change change = new Change();
+						logger.logChange(vm.getAvailableFunds());
+						System.out.println(change.calculateChange(vm.getAvailableFunds()));
+						vm.resetAvailableFunds();
+						break;
+					}
 				}
-				else if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)){
-					Change change = new Change();
-					logger.logChange(vm.getAvailableFunds());
-					System.out.println(change.calculateChange(vm.getAvailableFunds()));
-					vm.resetAvailableFunds();
-					break;
-				}
-			}
-			else if (choice.equals(MAIN_MENU_OPTION_Exit)){
+			} else if (choice.equals(MAIN_MENU_OPTION_Exit)){
 				break;
 			}
 		}
@@ -97,3 +82,17 @@ Scanner input =new Scanner(System.in);
 		cli.run();
 	}
 }
+//				if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
+//					System.out.println("Insert Money.");
+//
+//					boolean feedMoneyLoop = true;
+//
+//					while (feedMoneyLoop) {
+//						String feedSelection = (String) menu.getChoiceFromOptions(FEED_MONEY_MENU_OPTIONS);
+//
+//						if (feedSelection.equals(FEED_MONEY_DONE)){
+//							feedMoneyLoop = false;
+////						}
+//						else {
+//							BigDecimal amountAdd = vm.feedMoney(feedSelection, accumulatedBalance);
+//							accumulatedBalance = accumulatedBalance.add(amountAdd);

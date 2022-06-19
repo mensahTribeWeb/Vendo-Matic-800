@@ -50,15 +50,6 @@ public class VendingFunctions {
         return sound;
     }
 
-    public void feedMoney(BigDecimal amountInserted) {
-        SalesReport logger = new SalesReport();
-        logger.logFeed(amountInserted, availableFunds);
-        availableFunds = availableFunds.add(amountInserted);
-        System.out.println("Sucessfully inserted: $" + amountInserted.toString());
-
-    }
-
-
     //     * When the customer selects "(2) Purchase",
 //     * they are guided through the purchasing process menu
 //     * */
@@ -69,19 +60,23 @@ public class VendingFunctions {
 //     * whole dollar amounts—for
 //     * example, $1, $2, $5, or $10.
 //     * */
-    public BigDecimal feedMoney(String selection, BigDecimal currentAccumulatedBalance) {
-        BigDecimal currentMoneyProvided = new BigDecimal(0);
-        String transaction = "Feed Money Now: ";
-        if (selection.equals("1 dollar")) {
-            currentMoneyProvided = new BigDecimal(1.00);
-        } else if (selection.equals("2 dollar")) {
-            currentMoneyProvided = new BigDecimal(2.00);
-        } else if (selection.equals("5 dollar")) {
-            currentMoneyProvided = new BigDecimal(5.00);
-        } else if (selection.equals("10 dollar")) {
-            currentMoneyProvided = new BigDecimal(10.00);
-        }
-        return currentMoneyProvided;
+//    public BigDecimal feedMoney(String selection, BigDecimal currentAccumulatedBalance) {
+//        BigDecimal currentMoneyProvided = new BigDecimal(0);
+//        String transaction = "Feed Money Now: ";
+//        if (selection.equals("1 dollar")) {
+//            currentMoneyProvided = new BigDecimal(1.00);
+//        } else if (selection.equals("2 dollar")) {
+//            currentMoneyProvided = new BigDecimal(2.00);
+//        } else if (selection.equals("5 dollar")) {
+//            currentMoneyProvided = new BigDecimal(5.00);
+//        } else if (selection.equals("10 dollar")) {
+//            currentMoneyProvided = new BigDecimal(10.00);
+//        }
+    public void feedMoney (BigDecimal amountInserted) {
+        SalesReport logger = new SalesReport();
+        logger.logFeed(amountInserted, availableFunds);
+        availableFunds = availableFunds.add(amountInserted);
+        System.out.println("Successfully added: $" + amountInserted.toString());
     }
 
     public void refill() {
