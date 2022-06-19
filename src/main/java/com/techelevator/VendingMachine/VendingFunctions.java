@@ -4,7 +4,6 @@ package com.techelevator.VendingMachine;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class VendingFunctions {
 
@@ -12,7 +11,7 @@ public class VendingFunctions {
     private BigDecimal availableFunds = new BigDecimal(0);
 
     private static Inventory myInventory = new Inventory();
-    private SalesReport mySalesReports = new SalesReport();
+    private LogFile mySalesReports = new LogFile();
     public Inventory getMyInventory() {
         return myInventory;
     }
@@ -40,7 +39,7 @@ public class VendingFunctions {
     }
 
     public String vend(String key) {
-        SalesReport logger = new SalesReport();
+        LogFile logger = new LogFile();
         logger.logPurchase(key, itemsInTheMachine.get(key).get(0), availableFunds);
         availableFunds = availableFunds.subtract(itemsInTheMachine.get(key).get(0).getPrice());
         String sound = itemsInTheMachine.get(key).get(0).makeSound();
@@ -50,30 +49,9 @@ public class VendingFunctions {
         return sound;
     }
 
-    //     * When the customer selects "(2) Purchase",
-//     * they are guided through the purchasing process menu
-//     * */
-//
-//    //Feed money
-//    /**
-//     * "(1) Feed Money" allows the customer to repeatedly feed money into the machine in valid,
-//     * whole dollar amounts—for
-//     * example, $1, $2, $5, or $10.
-//     * */
-//    public BigDecimal feedMoney(String selection, BigDecimal currentAccumulatedBalance) {
-//        BigDecimal currentMoneyProvided = new BigDecimal(0);
-//        String transaction = "Feed Money Now: ";
-//        if (selection.equals("1 dollar")) {
-//            currentMoneyProvided = new BigDecimal(1.00);
-//        } else if (selection.equals("2 dollar")) {
-//            currentMoneyProvided = new BigDecimal(2.00);
-//        } else if (selection.equals("5 dollar")) {
-//            currentMoneyProvided = new BigDecimal(5.00);
-//        } else if (selection.equals("10 dollar")) {
-//            currentMoneyProvided = new BigDecimal(10.00);
-//        }
+
     public void feedMoney (BigDecimal amountInserted) {
-        SalesReport logger = new SalesReport();
+        LogFile logger = new LogFile();
         logger.logFeed(amountInserted, availableFunds);
         availableFunds = availableFunds.add(amountInserted);
         System.out.println("Successfully added: $" + amountInserted.toString());
@@ -137,17 +115,4 @@ public class VendingFunctions {
 
 }
 
-//balancesubtraction
-        //finish transaction
-        //make sure to handle if someone tries to deposit a neg amount
-//    //purchase method used by purchase menu
-//    public String purchase(String itemCode) {
-//        BigDecimal another0 = new BigDecimal("0.00");
-//        if (myCash.getCustomerBalance().compareTo(another0) == 0) {
-//            return "Error: Zero balance.";
-//        } else if (!myInventory.checkForItemCode(itemCode)) {
-//            return "Error: please select an item from the available options.";
-//        } else if (priceByCode(itemCode).compareTo(myCash.getCustomerBalance()) > 0) {
-//            return "Error: Deposit more money to purchase this item";
-//        } else if (myInventory.itemSoldOut(itemCode)) {
-//            return "Item sold out, choose something else.";
+

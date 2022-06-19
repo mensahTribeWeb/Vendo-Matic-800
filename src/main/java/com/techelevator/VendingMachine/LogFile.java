@@ -8,7 +8,7 @@ import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
-public class SalesReport {
+public class LogFile {
 
 
     public void logPurchase(String slot, Items item, BigDecimal initialBalance) {

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Scanner;
@@ -14,9 +13,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SalesReportTest {
+public class LogFileTest {
 
-        SalesReport sut;
+        LogFile sut;
         File logFile;
         BigDecimal bd1;
         BigDecimal bd2;
@@ -33,7 +32,7 @@ public class SalesReportTest {
             bd3 = new BigDecimal("7.21");
             bd4 = new BigDecimal("12.14");
             bdZero = new BigDecimal("0.00");
-            sut = new SalesReport();
+            sut = new LogFile();
             if (logFile.exists()) {
                 logFile.delete();
             }
@@ -78,7 +77,6 @@ public class SalesReportTest {
             assertEquals(expectedString5, line5);
 
             scanner.close();
-
         }
 
         @After

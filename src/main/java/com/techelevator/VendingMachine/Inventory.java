@@ -103,27 +103,4 @@ public class Inventory {
             return vendingMap;
         }
     }
-    //Partial N.M. Code
-//                String[] inventoryInfo = line.split("\\|");
-//                String slot = inventoryInfo[0];
-//                String name = inventoryInfo[1];
-//                BigDecimal price = new BigDecimal(inventoryInfo[2]);
-//                String type = inventoryInfo[3];
-//                if (type.equals("Beverage")){
-//                    vendingMachineArray.add(new Beverages(slot, name, price, type,5));
-//                }
-//                else if (type.equals("Candy")){
-//                    vendingMachineArray.add(new Candy(slot, name, price, type,5));
-//                }
-//                else if (type.equals("Chips")){
-//                    vendingMachineArray.add(new Chips(slot, name, price, type,5));
-//                }
-//                else if (type.equals("Gum")){
-//                    vendingMachineArray.add(new Gum(slot, name, price, type,5));
-//                }
-//            }
-//        } catch (IOException e) {
-//            System.out.println("File not found");
-//        }
-//    }
-//
+

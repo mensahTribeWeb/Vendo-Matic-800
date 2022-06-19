@@ -31,7 +31,7 @@ Scanner input =new Scanner(System.in);
 	}
 
 	public void run() {
-		SalesReport logger = new SalesReport();
+		LogFile logger = new LogFile();
 		vm.refill();
 		//Beginning Menu
 		while(true) {
@@ -82,17 +82,3 @@ Scanner input =new Scanner(System.in);
 		cli.run();
 	}
 }
-//				if (purchaseSelection.equals(PURCHASE_MENU_OPTION_FEED_MONEY)){
-//					System.out.println("Insert Money.");
-//
-//					boolean feedMoneyLoop = true;
-//
-//					while (feedMoneyLoop) {
-//						String feedSelection = (String) menu.getChoiceFromOptions(FEED_MONEY_MENU_OPTIONS);
-//
-//						if (feedSelection.equals(FEED_MONEY_DONE)){
-//							feedMoneyLoop = false;
-////						}
-//						else {
-//							BigDecimal amountAdd = vm.feedMoney(feedSelection, accumulatedBalance);
-//							accumulatedBalance = accumulatedBalance.add(amountAdd);

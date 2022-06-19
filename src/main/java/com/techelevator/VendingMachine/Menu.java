@@ -51,7 +51,7 @@ public class Menu {
 		out.flush();
 	}
 	public void getChoiceForSpecificItem(VendingFunctions vm) {
-		SalesReport logger = new SalesReport();
+		LogFile logger = new LogFile();
 		String userInput = in.nextLine();
 		String selectedOption = userInput.toUpperCase();
 		if(vm.getItemsInTheMachine().containsKey(selectedOption) || selectedOption == "0") {
