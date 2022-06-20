@@ -23,13 +23,10 @@ public class VendingFunctions {
             return true;
         }
     }
-    //constructor
+
     public VendingFunctions() {
         myInventory.loadInventory();
     }
-
-    //getters, setters, and helper methods
-
 
     public boolean canPurchase(String key) {
         if (itemsInTheMachine.get(key).get(0).getPrice().doubleValue() > availableFunds.doubleValue()) {
@@ -48,7 +45,6 @@ public class VendingFunctions {
         //}
         return sound;
     }
-
 
     public void feedMoney (BigDecimal amountInserted) {
         LogFile logger = new LogFile();
@@ -110,6 +106,10 @@ public class VendingFunctions {
     public void resetAvailableFunds(){
         BigDecimal reset = new BigDecimal("0.00");
         this.availableFunds = reset;
+
+    }
+
+    public static void main(String[] args) {
 
     }
 

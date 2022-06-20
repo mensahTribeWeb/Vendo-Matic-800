@@ -14,8 +14,6 @@ public class Inventory {
     Map<String, List<Items>> vendingMap;
     String[] documentArray;
 
-
-
     //create inventory map from a formatted txt file
     //load items
     public void loadInventory() {
@@ -93,8 +91,6 @@ public class Inventory {
             }
             this.vendingMap = vendingMap;
         }
-
-
 
         //Retrieves the map generated after reading the csv file and the actual creation of the map.
         public Map<String, List<Items>> stockMachine() {
