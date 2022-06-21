@@ -46,7 +46,7 @@ public class VendingMachineCLI {
 					System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());
 					String purchaseChoice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
-					if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
+					if (purchaseChoice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) { ///<---Rogue Semi-colon issue that caused a "if without else" error, which when removed else, cause faulty menu looping.
 						//Feed Money Menu
 						while (true){
 							System.out.println("\nCurrent Balance is $" + vm.getAvailableFunds());

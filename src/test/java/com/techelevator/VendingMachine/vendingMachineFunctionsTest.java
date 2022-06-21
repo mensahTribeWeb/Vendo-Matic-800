@@ -25,8 +25,6 @@ public class vendingMachineFunctionsTest {
     }
 
 
-    //vend() is inherently tested within each of the other methods' tests
-    //feedMoney() is inherently tested within each of the other methods' tests
     @Test
     public void testIsInStock() {
         sut.refill();

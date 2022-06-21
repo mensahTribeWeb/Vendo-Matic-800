@@ -40,7 +40,7 @@ public class LogFileTest {
         }
 
         @Test
-        public void testLogCreateAppendFeedPurchaseInvalidChange() throws FileNotFoundException {
+        public void testLogCreateFeedPurchaseInvalidChange() throws FileNotFoundException {
             Items item = new Gum("Triplemint", new BigDecimal(".75"));
             sut.logFeed(bd1, bdZero);
             sut.logFeed(bd1, bd1);
