@@ -29,7 +29,7 @@ public class LogFile {
     }
 
     public void notEnoughMoney(BigDecimal balance)  {
-        printToLogFile("Insufficent funds.",balance,balance);
+        printToLogFile("Insufficient funds.",balance,balance);
     }
 
 
@@ -42,7 +42,7 @@ public class LogFile {
 
     private void printToLogFile(String event, BigDecimal start, BigDecimal finish) { //throws IOException {
 
-        // Prepare line of output
+        // Prepare line of output ///with %-00 left format padding
 
         StringBuilder logEntry = new StringBuilder();
         logEntry.append(String.format("%-24s", new SimpleDateFormat("MM/dd/YYYY hh:mm:ss a").format(new java.util.Date())));
@@ -61,12 +61,12 @@ public class LogFile {
             try {
                 logFile.createNewFile();
             } catch (IOException e) {
-                System.out.println("\n***WARNING: UNABLE TO CREATE LOG FILE***\n");
+                System.out.println("\n!Cannot Create Log File!\n");
             }
 
 
         } else if (logFile.exists() && logFile.isDirectory()) {
-            System.out.println("\n***WARNING: DIRECTORY WITH NAME \"Log.txt\" exists.***\n");
+            System.out.println("\n!File with Name: \"Log.txt\" already exists!\n");
         }
 
 
@@ -79,7 +79,7 @@ public class LogFile {
             pw.flush();
 
         } catch (IOException e) {
-            System.out.println("\n***WARNING: LOG FILE HAS BEEN DELETED.  COULD NOT RECORD TRANSACTION.***\n");
+            System.out.println("\n!Could Not Create Log File!\n");
         }
 
     }

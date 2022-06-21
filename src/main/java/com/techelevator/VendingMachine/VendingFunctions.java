@@ -7,32 +7,29 @@ import java.util.Map;
 
 public class VendingFunctions {
 
+    private static final Inventory myInventory = new Inventory();
     private Map<String, List<Items>> itemsInTheMachine;
     private BigDecimal availableFunds = new BigDecimal(0);
-
-    private static Inventory myInventory = new Inventory();
-    private LogFile mySalesReports = new LogFile();
-    public Inventory getMyInventory() {
-        return myInventory;
-    }
-
-    public boolean isInStock(String key) {
-        if (itemsInTheMachine.get(key).size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
-    }
+    private final LogFile myLog = new LogFile();
 
     public VendingFunctions() {
         myInventory.loadInventory();
     }
 
+    public static void main(String[] args) {
+
+    }
+
+    public Inventory getMyInventory() {
+        return myInventory;
+    }
+
+    public boolean isInStock(String key) {
+        return itemsInTheMachine.get(key).size() != 0;
+    }
+
     public boolean canPurchase(String key) {
-        if (itemsInTheMachine.get(key).get(0).getPrice().doubleValue() > availableFunds.doubleValue()) {
-            return false;
-        }
-        return true;
+        return !(itemsInTheMachine.get(key).get(0).getPrice().doubleValue() > availableFunds.doubleValue());
     }
 
     public String vend(String key) {
@@ -40,13 +37,13 @@ public class VendingFunctions {
         logger.logPurchase(key, itemsInTheMachine.get(key).get(0), availableFunds);
         availableFunds = availableFunds.subtract(itemsInTheMachine.get(key).get(0).getPrice());
         String sound = itemsInTheMachine.get(key).get(0).makeSound();
-        //if(canPurchase(key) && isInStock(key)) {
+        if(canPurchase(key) && isInStock(key)) {
         itemsInTheMachine.get(key).remove(0);
-        //}
+        }
         return sound;
     }
 
-    public void feedMoney (BigDecimal amountInserted) {
+    public void feedMoney(BigDecimal amountInserted) {
         LogFile logger = new LogFile();
         logger.logFeed(amountInserted, availableFunds);
         availableFunds = availableFunds.add(amountInserted);
@@ -59,10 +56,10 @@ public class VendingFunctions {
         itemsInTheMachine = im.stockMachine();
 
     }
+
     public String displayItems() {
 
-        // Make sure the vending machine has been successfully loaded at least
-        // once.
+        // Make sure the vending machine has been successfully loaded
 
         if (itemsInTheMachine != null && itemsInTheMachine.size() != 0) {
 
@@ -78,8 +75,8 @@ public class VendingFunctions {
                     String name = slotItems.get(0).getItemName();
                     String price = "$" + slotItems.get(0).getPrice().toString();
                     printedListOfItems.append(key + "  ");
-                    printedListOfItems.append(String.format("%-20s", name));
-                    printedListOfItems.append(String.format("%1$6s", price));
+                    printedListOfItems.append(String.format("%-20s", name)); //%20s means your String will be left-padded if its length is less than 20.
+                    printedListOfItems.append(String.format("%1$6s", price)); //%1$6s = string fmt1
                     printedListOfItems.append("  (" + slotItems.size() + ")");
                     printedListOfItems.append("\n");
 
@@ -103,13 +100,9 @@ public class VendingFunctions {
         return itemsInTheMachine;
     }
 
-    public void resetAvailableFunds(){
+    public void resetAvailableFunds() {
         BigDecimal reset = new BigDecimal("0.00");
         this.availableFunds = reset;
-
-    }
-
-    public static void main(String[] args) {
 
     }
 
