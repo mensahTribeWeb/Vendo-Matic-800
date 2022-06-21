@@ -24,7 +24,7 @@ public class Inventory {
         //Stores the entire document as a single string.
         try (Scanner input = new Scanner(file)) {
             while (input.hasNextLine()) {
-                //String line = input.nextLine(); *NOTE: This line was unesccary and causing a loss of the 1st "A1" item in the array list, thus final InventoryMap list, thus causing issues with Testing. Yay Testing.
+                //String line = input.nextLine(); *NOTE: This line was unnecessary and causing a loss of the 1st "A1" item in the array list, thus final InventoryMap list, thus causing issues with Testing. Yay Testing.
                 while (input.hasNextLine()) {
                     document += input.nextLine() + "\n";
 
